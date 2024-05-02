@@ -53,4 +53,25 @@ jobs:
       - name: run e2e test
         run: |
           pytest ./order_service/app/tests/component
+
+  docker_push:
+    runs-on: ubuntu-latest
+      needs: [test]
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Build docker image
+          run: |
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/delivery_service ./delivery_service
+
+        - name: Log in to Dockerhub
+          uses: docker/login-action@v3.0.0
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+        - name: Push Tag to DockerHub
+          run: |
+            docker push ${{ secrets.DOCKER_USERNAME }}/delivery_service:latest
+
           
