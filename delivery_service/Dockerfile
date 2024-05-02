@@ -9,4 +9,6 @@ COPY ./app /code/app
 
 COPY ./entry.sh /code/entry.sh
 
+RUN chmod +x /code/entry.sh
+
 CMD ["/code/entry.sh"]

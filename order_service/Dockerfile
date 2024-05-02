@@ -11,4 +11,6 @@ COPY ./entry.sh /code/entry.sh
 COPY ./alembic /code/alembic
 COPY ./alembic.ini /code/alembic.ini
 
+RUN chmod +x /code/entry.sh
+
 CMD ["/code/entry.sh"]
