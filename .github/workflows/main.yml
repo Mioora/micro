@@ -43,7 +43,7 @@ jobs:
         run: |
           sudo docker build -t delivery_test ./delivery_service
           sleep 10
-          docker run -d -p 82:80 delivery_test
+          docker run -d -p 82:8080 delivery_test
           sleep 25
 
       - name: run e2e test
