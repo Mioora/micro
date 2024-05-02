@@ -7,7 +7,7 @@ from uuid import UUID, uuid4
 import time
 
 time.sleep(1)
-base_url = 'http://localhost:80/api/order/'
+base_url = 'http://localhost:81/api/order/'
 header = {'token': ''}
 
 def test_get_order_empty() -> None:

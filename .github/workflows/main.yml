@@ -1,1 +1,56 @@
- 
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: prepare unit test
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip install -r ./order_service/requirements.txt
+
+      - name: prepare unit test
+        run: |
+          pip install -r ./delivery_service/requirements.txt
+
+
+      - name: run unit test
+        run: |
+          pytest ./delivery_service/app/tests/unit
+
+      - name: run unit test
+        run: |
+          pytest ./order_service/app/tests/unit
+
+      - name: prepare e2e test
+        run: |
+          sudo docker build -t order_test ./order_service
+          sleep 10
+          docker run -d -p 81:8080 order_test
+
+
+      - name: prepare e2e test
+        run: |
+          sudo docker build -t delivery_test ./delivery_service
+          sleep 10
+          docker run -d -p 82:80 delivery_test
+          sleep 25
+
+      - name: run e2e test
+        run: |
+          pytest ./delivery_service/app/tests/component
+
+      - name: run e2e test
+        run: |
+          pytest ./order_service/app/tests/component
+          

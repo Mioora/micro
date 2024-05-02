@@ -7,7 +7,7 @@ import time
 
 
 time.sleep(1)
-base_url = 'http://localhost:80/api/delivery/'
+base_url = 'http://localhost:82/api/delivery/'
 
 @pytest.fixture(scope='session')
 def first_delivery_data() -> tuple[UUID, UUID, dict]:
