@@ -74,4 +74,25 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/delivery_service:latest
 
+  yandex_push:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build docker image
+        run: |
+          docker build -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/order_service:latest ./order_service
+
+      - name: Login to YC REGISTRY
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: cr.yandex
+          username: json_key
+          password: ${{ secrets.YC_KEYS }}
+
+      - name: Push to YC REGISTRY
+        run: |
+          docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/order_service:latest
+
           
