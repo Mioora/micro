@@ -95,4 +95,19 @@ jobs:
         run: |
           docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/order_service:latest
 
+  yandex_deploy:
+    runs-on: ubuntu-latest
+    needs: [yandex_push]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy serverless container
+        uses: yc-actions/yc-sls-container-deploy@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_KEYS }}
+          container-name: ${{ secrets.YC_CONTAINER_NAME }}
+          folder-id: ${{ secrets.YC_FOLDER_ID }}
+          revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/order_service:latest
+          revision-service-account-id: ${{ secrets.YC_SA_ID }}
+
           
